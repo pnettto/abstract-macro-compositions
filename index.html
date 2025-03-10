@@ -31,103 +31,96 @@
 
     // Define the compositions – each composition is an object with a fragments array.
     compositions = [
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'square', size: 'large', offset: { x: 0.1, y: 0.1 }, anchor: { x: 'left', y: 'top' } },
-      //     { orientation: 'square', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 2 }  },
-      //     { orientation: 'square', size: 'large', offset: { x: -0.1, y: -0.1 }, anchor: { x: 'right', y: 'bottom' } }
-      //   ]
-      // },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'square', size: 'large', offset: { x: 0.5, y: 0.5 }, anchor: { x: 'left', y: 'top' } },
-      //     { orientation: 'square', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 2 }  },
-      //     { orientation: 'square', size: 'large', offset: { x: -0.5, y: -0.5 }, anchor: { x: 'right', y: 'bottom' } }
-      //   ]
-      // },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'square', size: 'xlarge', offset: { x: -1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 },
-      //     { orientation: 'square', size: 'xlarge', offset: { x: -0.5, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 }  },
-      //     { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8  },
-      //     { orientation: 'square', size: 'xlarge', offset: { x: 0.5, y:0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 }  },
-      //     { orientation: 'square', size: 'xlarge', offset: { x: 1, y:0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 }
-      //   ]
-      // },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'portrait', size: 'xlarge', offset: { x: -1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 0.5 } },
-      //     { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 1.5 }  },
-      //     { orientation: 'portrait', size: 'xlarge', offset: { x: 1, y:0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 }  }
-      //   ]
-      // },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'square', size: 'large', offset: { x: 0.2, y: 0 }, anchor: { x: 'left', y: 'center' }, opacity: 0.8, duration: { delay: 0.5 } },
-      //     { orientation: 'portrait', size: 'large', offset: { x: -0.1, y: -0.02 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 4, fadeIn: 4, linger: 3, fadeOut: 6 } },
-      //     { orientation: 'portrait', size: 'large', offset: { x: 0.1, y: 0.02 }, anchor: { x: 'center', y: 'center' },  opacity: 0.6, duration: { delay: 4, fadeIn: 4, linger: 4, fadeOut: 6 } },
-      //     { orientation: 'square', size: 'large', offset: { x: -0.2, y: 0 }, anchor: { x: 'right', y: 'center' }, opacity: 0.8, duration: { delay: 1.5, linger: 3 } }
-      //   ]
-      // },
       {
-        // Two large squares, one on top left and the other on bottom right.
+        // Portrait in the middle, squares to the side
+        fragments: [
+          { orientation: 'portrait', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 3, linger: 5, fadeOut: 3 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: -0.3, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 4, linger: 4, fadeOut: 3 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.3, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 4, linger: 4, fadeOut: 3 } },
+        ]
+      },
+      {
+        // Squareas wash to the right
+        fragments: [
+          { orientation: 'square', size: 'xlarge', offset: { x: -0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0, fadeIn: 0.5, linger: 4, fadeOut: 4 }, opacity: 0.5 },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.1, fadeIn: 0.5, linger: 3.6, fadeOut: 4 }, opacity: 0.5 },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.4, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.2, fadeIn: 0.5, linger: 3.2, fadeOut: 4 }, opacity: 0.5 },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.3, fadeIn: 0.5, linger: 2.8, fadeOut: 4 }, opacity: 0.5 },
+        ]
+      },
+      {
+        // Two smaller squares on the left and right introduce the larger one on the center
+        fragments: [
+          { orientation: 'square', size: 'large', offset: { x: 0.1, y: 0 }, anchor: { x: 'left', y: 'center' }, duration: { fadeIn: 2, linger: 1.5, fadeOut: 3 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 1, linger: 1, fadeOut: 3 } },
+          { orientation: 'square', size: 'large', offset: { x: -0.1, y: 0 }, anchor: { x: 'right', y: 'center' }, duration: { fadeIn: 2, linger: 1.5, fadeOut: 3 } }
+        ]
+      },
+      {
+        // Large squares interpolate side-by-side
+        fragments: [
+          { orientation: 'square', size: 'xlarge', offset: { x: -1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 },
+          { orientation: 'square', size: 'xlarge', offset: { x: -0.5, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.5, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 }
+        ]
+      },
+      {
+        // Large portraits interpolate side-by-side
+        fragments: [
+          { orientation: 'portrait', size: 'xlarge', offset: { x: -1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 0.5 } },
+          { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 1.5 } },
+          { orientation: 'portrait', size: 'xlarge', offset: { x: 1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 } }
+        ]
+      },
+      {
+        // Two squares on the sides introduce an interpolation of portraits in the center
+        fragments: [
+          { orientation: 'square', size: 'large', offset: { x: 0.2, y: 0 }, anchor: { x: 'left', y: 'center' }, opacity: 0.8, duration: { delay: 0.5 } },
+          { orientation: 'portrait', size: 'large', offset: { x: -0.1, y: -0.02 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 4, fadeIn: 4, linger: 3, fadeOut: 6 } },
+          { orientation: 'portrait', size: 'large', offset: { x: 0.1, y: 0.02 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { delay: 4, fadeIn: 4, linger: 4, fadeOut: 6 } },
+          { orientation: 'square', size: 'large', offset: { x: -0.2, y: 0 }, anchor: { x: 'right', y: 'center' }, opacity: 0.8, duration: { delay: 1.5, linger: 3 } }
+        ]
+      },
+      {
+        // Portraits interpolate in the middle
         fragments: [
           { orientation: 'portrait', size: 'large', offset: { x: -0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 3, fadeOut: 6 } },
           { orientation: 'portrait', size: 'large', offset: { x: -0.3, y: -0.02 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 3, fadeOut: 6 } },
-          { orientation: 'portrait', size: 'large', offset: { x: 0.3, y: 0.02 }, anchor: { x: 'center', y: 'center' },  opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 } },
-          { orientation: 'portrait', size: 'large', offset: { x: 0.6, y: 0 }, anchor: { x: 'center', y: 'center' },  opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 } },
+          { orientation: 'portrait', size: 'large', offset: { x: 0.3, y: 0.02 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 } },
+          { orientation: 'portrait', size: 'large', offset: { x: 0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 } },
         ]
       },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'square', size: 'large', offset: { x: 0.2, y: 0.1 }, anchor: { x: 'center', y: 'top' } },
-      //     { orientation: 'square', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 2 } },
-      //     { orientation: 'square', size: 'large', offset: { x: -0.2, y: -0.1 }, anchor: { x: 'center', y: 'bottom' } }
-      //   ]
-      // },
-      // {
-      //   // Two large squares side by side in the center
-      //   fragments: [
-      //     { orientation: 'square', size: 'xlarge', offset: { x: -0.2, y: 0 }, anchor: { x: 'center', y: 'center' } },
-      //     { orientation: 'square', size: 'xlarge', offset: { x: 0.2, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 }
-      //   ]
-      // },
-      // {
-      //   // Two large squares side by side in the center, slightly offset at the y axis
-      //   fragments: [
-      //     { orientation: 'square', size: 'xlarge', offset: { x: -0.2, y: -0.1 }, anchor: { x: 'center', y: 'center' } },
-      //     { orientation: 'square', size: 'xlarge', offset: { x: 0.2, y: 0.1 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 }
-      //   ]
-      // },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
-      //     { orientation: 'square', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
-      //   ]
-      // },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
-      //     { orientation: 'square', size: 'large', offset: { x: 0.5, y: 0 }, anchor: { x: 'center', y: 'center' } },
-      //     { orientation: 'square', size: 'medium', offset: { x: 0.3, y: -0.3 }, anchor: { x: 'left', y: 'bottom' } },
-      //   ]
-      // },
-      // {
-      //   // Two large squares, one on top left and the other on bottom right.
-      //   fragments: [
-      //     { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
-      //     { orientation: 'square', size: 'large', offset: { x: -0.8, y: 0 }, anchor: { x: 'center', y: 'center' },  opacity: 0.9 },
-      //     { orientation: 'square', size: 'medium', offset: { x: -0.3, y: 0.3 }, anchor: { x: 'right', y: 'top' } },
-      //   ]
-      // },
+      {
+        // Two large squares interpolate side by side in the center
+        fragments: [
+          { orientation: 'square', size: 'xlarge', offset: { x: -0.2, y: 0 }, anchor: { x: 'center', y: 'center' } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.2, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 }
+        ]
+      },
+      {
+        // Two large squares interpolate side by side in the center, slightly offset at the y axis
+        fragments: [
+          { orientation: 'square', size: 'xlarge', offset: { x: -0.2, y: -0.1 }, anchor: { x: 'center', y: 'center' } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.2, y: 0.1 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 }
+        ]
+      },
+      {
+        // Semi transparent square lays on large portrait
+        fragments: [
+          { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
+          { orientation: 'square', size: 'large', offset: { x: 0, y: 0 }, opacity: 0.7, anchor: { x: 'center', y: 'center' } },
+        ]
+      },
+      {
+        // Square and portrait interpolate inthe middle while smaller square appears on the top right
+        fragments: [
+          { orientation: 'portrait', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
+          { orientation: 'square', size: 'large', offset: { x: -0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 },
+          { orientation: 'square', size: 'medium', offset: { x: -0.3, y: 0.3 }, anchor: { x: 'right', y: 'top' }, duration: { delay: 2, linger: 2 } },
+        ]
+      },
     ];
 
     function preload() {
@@ -197,9 +190,9 @@
     // Start the next composition.
     function startNextComposition() {
       let newIndex;
-      // do {
-      newIndex = floor(random(compositions.length));
-      // } while (newIndex === lastCompositionIndex);
+      do {
+        newIndex = floor(random(compositions.length));
+      } while (newIndex === lastCompositionIndex);
 
       lastCompositionIndex = newIndex;
       currentComposition = compositions[newIndex];
