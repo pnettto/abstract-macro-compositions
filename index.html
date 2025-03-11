@@ -12,25 +12,58 @@
     body {
       margin: 0;
       overflow: hidden;
+      background-color: black;
     }
   </style>
 </head>
 
 <body>
   <script>
-    const numImages = 12;
+    const numImages = 11;
     const defaultDurations = { delay: 0, fadeIn: 4, linger: 4, fadeOut: 4 };
+    const defaultDuration = 12;
+
     let imgs = [];
-    let compositions = [];
     let currentCompositionDef;
     let currentFragments = [];
     let compositionStartTime = 0;
-    const defaultDuration = 12;
+    let blenModes = {};
     let compositionDuration = defaultDuration;
     let lastCompositionIndex = -1;
 
-    // Define the compositions – each composition is an object with a fragments array.
-    compositions = [
+    const compositions = [
+      {
+        // Portrait in the middle, squares to the side
+        fragments: [
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 0, fadeOut: 4 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 4, fadeIn: 4, linger: 0, fadeOut: 4 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 8, fadeIn: 4, linger: 0, fadeOut: 4 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 12, fadeIn: 4, linger: 0, fadeOut: 4 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 16, fadeIn: 4, linger: 0, fadeOut: 4 } },
+        ]
+      },
+      {
+        // Two fragments made of the same source side by side
+        fragments: [
+          { orientation: 'square', size: 'large', offset: { x: -0.525, y: 0 }, anchor: { x: 'center', y: 'center' } },
+          { orientation: 'square', size: 'large', offset: { x: 0.525, y: 0 }, anchor: { x: 'center', y: 'center' } },
+        ],
+        sameSource: true
+      },
+      {
+        // Blend of two large squares in the middle (overlay)
+        fragments: [
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'overlay', duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
+        ]
+      },
+      {
+        // Blend of two large squares in the middle (soft_light)
+        fragments: [
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'soft_light', duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
+        ]
+      },
       {
         // Portrait in the middle, squares to the side
         fragments: [
@@ -129,17 +162,41 @@
         imgs.push(loadImage(i + '.jpg'));
       }
       // Load the soundtrack
-      soundtrack = loadSound('/abstract-macro-compositions/soundtrack.mp3');
+      // soundtrack = loadSound('/abstract-macro-compositions/soundtrack.mp3');
     }
 
     function setup() {
       createCanvas(windowWidth, windowHeight);
       noStroke();
       imageMode(CENTER);
+      loadBlendModes()
       startNextComposition();
-
+        
       // Play the soundtrack on loop
-      soundtrack.loop();
+      // soundtrack.loop();
+    }
+
+    function loadBlendModes() {
+      blendModes = {
+        'normal': BLEND,          // default
+        'blend': BLEND,           // default (alias)
+        'add': ADD,               // additive blending
+        'darkest': DARKEST,       // only the darkest color
+        'lightest': LIGHTEST,     // only the lightest color
+        'difference': DIFFERENCE, // subtracts colors from underlying image
+        'exclusion': EXCLUSION,   // similar to difference with lower contrast
+        'multiply': MULTIPLY,     // multiplies colors
+        'screen': SCREEN,         // *** opposite of multiply (lightens)
+        'overlay': OVERLAY,       // *** mix of multiply and screen
+        'hard_light': HARD_LIGHT, // similar to overlay but swapped
+        'soft_light': SOFT_LIGHT, // *** softer version of hard_light
+        'dodge': DODGE,           // lightens light areas
+        'burn': BURN,             // darkens dark areas
+        'replace': REPLACE,       // overwrites without blending
+        'subtract': SUBTRACT      // subtractive blending
+      };
+
+      return blendModes;
     }
 
     function windowResized() {
@@ -180,19 +237,25 @@
         // Apply the fragment's opacity to the alpha value.
         let finalAlpha = alpha * (frag.opacity || 1);
 
+        if (frag.blendMode) {
+          blendMode(blendModes[frag.blendMode]);
+        }
+        
         tint(255, finalAlpha);
         image(frag.img, frag.pos.x, frag.pos.y, frag.drawW, frag.drawH,
           frag.cropX, frag.cropY, frag.drawW, frag.drawH);
         noTint();
+
+        blendMode(BLEND);
       }
     }
 
     // Start the next composition.
     function startNextComposition() {
       let newIndex;
-      do {
+      // do {
         newIndex = floor(random(compositions.length));
-      } while (newIndex === lastCompositionIndex);
+      // } while (newIndex === lastCompositionIndex);
 
       lastCompositionIndex = newIndex;
       currentComposition = compositions[newIndex];
@@ -231,11 +294,12 @@
     // Generate fragment objects from the composition definition.
     function generateFragments(compDef) {
       let frags = [];
+      let img;
 
       for (let fragDef of compDef.fragments) {
         let fragment = applyVariations(fragDef);
         let dims = getTargetDimensions(fragment);
-        let img = random(imgs);
+        img = compDef.sameSource ? img || random(imgs): random(imgs);
         let availableW = img.width;
         let availableH = img.height;
 
@@ -265,6 +329,7 @@
           drawW: drawW,
           drawH: drawH,
           pos: pos,
+          blendMode: fragment.blendMode || null,
           opacity: fragment.opacity || 1,
           duration: { ...defaultDurations, ...fragment.duration }
         };
@@ -278,10 +343,10 @@
       let w, h;
       if (fragDef.orientation === 'square') {
         if (fragDef.size === 'xlarge') {
-          let side = min(windowWidth, windowHeight) * 0.6;
+          let side = min(windowWidth, windowHeight) * 0.75;
           w = side; h = side;
         } else if (fragDef.size === 'large') {
-          let side = min(windowWidth, windowHeight) * 0.4;
+          let side = min(windowWidth, windowHeight) * 0.55;
           w = side; h = side;
         } else if (fragDef.size === 'medium') {
           let side = min(windowWidth, windowHeight) * 0.25;
@@ -292,7 +357,7 @@
         }
       } else if (fragDef.orientation === 'portrait') {
         if (fragDef.size === 'xlarge') {
-          w = windowWidth * 0.5;
+          w = windowWidth * 0.75;
           h = w * 1.5;
         } else if (fragDef.size === 'large') {
           w = windowWidth * 0.3;
@@ -304,6 +369,23 @@
           w = windowWidth * 0.15;
           h = w * 1.5;
         }
+      } else if (fragDef.orientation === 'landscape') {
+        if (fragDef.size === 'xlarge') {
+          h = windowHeight * 0.75;
+          w = h * 1.5;
+        } else if (fragDef.size === 'large') {
+          h = windowHeight * 0.3;
+          w = h * 1.5;
+        } else if (fragDef.size === 'medium') {
+          h = windowHeight * 0.2;
+          w = h * 1.5;
+        } else {
+          h = windowHeight * 0.15;
+          w = h * 1.5;
+        }
+      } else if (fragDef.orientation === 'full') {
+          h = windowHeight - 64;
+          w = windowWidth - 64;
       } else {
         let side = min(windowWidth, windowHeight) * 0.25;
         w = side; h = side;
@@ -348,13 +430,13 @@
     }
 
     // Toggle soundtrack playback on mouse click
-    function mousePressed() {
-      if (soundtrack && soundtrack.isPlaying()) {
-        soundtrack.pause();
-      } else if (soundtrack) {
-        soundtrack.loop();
-      }
-    }
+    // function mousePressed() {
+    //   if (soundtrack && soundtrack.isPlaying()) {
+    //     soundtrack.pause();
+    //   } else if (soundtrack) {
+    //     soundtrack.loop();
+    //   }
+    // }
   </script>
 </body>
 
