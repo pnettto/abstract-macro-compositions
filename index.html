@@ -32,7 +32,7 @@
 
     const compositions = [
       {
-        // Portrait in the middle, squares to the side
+        // Squares in the middle, fading into each other
         fragments: [
           { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 0, fadeOut: 4 } },
           { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 4, fadeIn: 4, linger: 0, fadeOut: 4 } },
@@ -50,107 +50,129 @@
         sameSource: true
       },
       {
-        // Blend of two large squares in the middle (overlay)
+        // Blend of large landscapes in the middle (screen blend, same source)
         fragments: [
-          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
-          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'overlay', duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'screen', duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'screen', duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'screen', duration: { fadeOut: 2 } },
+        ],
+        sameSource: true
+      },
+      {
+        //   // Blend of 6 large landscapes in the middle (screen blend, different sources)
+        fragments: [
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, blendMode: 'overlay', duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, blendMode: 'overlay', duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, blendMode: 'overlay', duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, blendMode: 'overlay', duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, blendMode: 'overlay', duration: { fadeOut: 2 } },
         ]
       },
       {
-        // Blend of two large squares in the middle (soft_light)
+        //   // Blend of 3 large landscapes in the middle (screen blend, different sources)
+        fragments: [
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, blendMode: 'overlay', duration: { fadeOut: 2 } },
+          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, blendMode: 'overlay', duration: { fadeOut: 2 } },
+        ]
+      },
+      {
+        // One large landscape appears
         fragments: [
           { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
-          { orientation: 'landscape', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'soft_light', duration: { fadeIn: 4, linger: 4, fadeOut: 2 } },
         ]
       },
       {
         // Portrait in the middle, squares to the side
         fragments: [
           { orientation: 'portrait', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 3, linger: 5, fadeOut: 3 } },
-          { orientation: 'square', size: 'xlarge', offset: { x: -0.3, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 4, linger: 4, fadeOut: 3 } },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0.3, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 4, linger: 4, fadeOut: 3 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: -0.3, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 4, linger: 4, fadeOut: 3 }, blendMode: 'screen' },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.3, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { fadeIn: 4, linger: 4, fadeOut: 3 }, blendMode: 'screen' },
         ]
       },
       {
-        // Squareas wash to the right
+        // Squares wash to the right
         fragments: [
           { orientation: 'square', size: 'xlarge', offset: { x: -0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0, fadeIn: 0.5, linger: 4, fadeOut: 4 }, opacity: 0.5 },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.1, fadeIn: 0.5, linger: 3.6, fadeOut: 4 }, opacity: 0.5 },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0.4, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.2, fadeIn: 0.5, linger: 3.2, fadeOut: 4 }, opacity: 0.5 },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.3, fadeIn: 0.5, linger: 2.8, fadeOut: 4 }, opacity: 0.5 },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.1, fadeIn: 0.5, linger: 3.6, fadeOut: 4 }, opacity: 0.5, blendMode: 'screen' },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.4, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.2, fadeIn: 0.5, linger: 3.2, fadeOut: 4 }, opacity: 0.5, blendMode: 'screen' },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 0.3, fadeIn: 0.5, linger: 2.8, fadeOut: 4 }, opacity: 0.5, blendMode: 'screen' },
         ]
       },
       {
         // Two smaller squares on the left and right introduce the larger one on the center
         fragments: [
           { orientation: 'square', size: 'large', offset: { x: 0.1, y: 0 }, anchor: { x: 'left', y: 'center' }, duration: { fadeIn: 2, linger: 1.5, fadeOut: 3 } },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 1, linger: 1, fadeOut: 3 } },
-          { orientation: 'square', size: 'large', offset: { x: -0.1, y: 0 }, anchor: { x: 'right', y: 'center' }, duration: { fadeIn: 2, linger: 1.5, fadeOut: 3 } }
+          { orientation: 'square', size: 'large', offset: { x: -0.1, y: 0 }, anchor: { x: 'right', y: 'center' }, duration: { fadeIn: 2, linger: 1.5, fadeOut: 3 } },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 1, fadeIn: 2, linger: 3, fadeOut: 3 }, blendMode: 'screen' }
         ]
       },
       {
         // Large squares interpolate side-by-side
         fragments: [
-          { orientation: 'square', size: 'xlarge', offset: { x: -1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 },
-          { orientation: 'square', size: 'xlarge', offset: { x: -0.5, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 } },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0.5, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 } },
-          { orientation: 'square', size: 'xlarge', offset: { x: 1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8 }
+          { orientation: 'square', size: 'xlarge', offset: { x: -0.5, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, duration: { delay: 2 }, blendMode: 'screen' },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, blendMode: 'screen' },
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.5, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7, duration: { delay: 2 }, blendMode: 'screen' },
         ]
       },
       {
         // Large portraits interpolate side-by-side
         fragments: [
           { orientation: 'portrait', size: 'xlarge', offset: { x: -1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 0.5 } },
-          { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 1.5 } },
-          { orientation: 'portrait', size: 'xlarge', offset: { x: 1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 } }
+          { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 1.5 }, blendMode: 'screen' },
+          { orientation: 'portrait', size: 'xlarge', offset: { x: 1, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.8, duration: { delay: 2 }, blendMode: 'screen' }
         ]
       },
       {
-        // Two squares on the sides introduce an interpolation of portraits in the center
+        // Two squares on the sides introduce an interpolation of portraits in the center, same source
         fragments: [
           { orientation: 'square', size: 'large', offset: { x: 0.2, y: 0 }, anchor: { x: 'left', y: 'center' }, opacity: 0.8, duration: { delay: 0.5 } },
-          { orientation: 'portrait', size: 'large', offset: { x: -0.1, y: -0.02 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 4, fadeIn: 4, linger: 3, fadeOut: 6 } },
-          { orientation: 'portrait', size: 'large', offset: { x: 0.1, y: 0.02 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { delay: 4, fadeIn: 4, linger: 4, fadeOut: 6 } },
-          { orientation: 'square', size: 'large', offset: { x: -0.2, y: 0 }, anchor: { x: 'right', y: 'center' }, opacity: 0.8, duration: { delay: 1.5, linger: 3 } }
-        ]
+          { orientation: 'square', size: 'large', offset: { x: -0.2, y: 0 }, anchor: { x: 'right', y: 'center' }, opacity: 0.8, duration: { delay: 1.5, linger: 3 } },
+          { orientation: 'portrait', size: 'medium', offset: { x: -0.05, y: -0.02 }, anchor: { x: 'center', y: 'center' }, duration: { delay: 4, fadeIn: 4, linger: 3, fadeOut: 6 } },
+          { orientation: 'portrait', size: 'medium', offset: { x: 0.05, y: 0.02 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { delay: 4, fadeIn: 4, linger: 4, fadeOut: 6 }, blendMode: 'screen' }
+        ],
+        sameSource: true
       },
       {
         // Portraits interpolate in the middle
         fragments: [
-          { orientation: 'portrait', size: 'large', offset: { x: -0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 3, fadeOut: 6 } },
-          { orientation: 'portrait', size: 'large', offset: { x: -0.3, y: -0.02 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 3, fadeOut: 6 } },
-          { orientation: 'portrait', size: 'large', offset: { x: 0.3, y: 0.02 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 } },
-          { orientation: 'portrait', size: 'large', offset: { x: 0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 } },
+          { orientation: 'portrait', size: 'medium', offset: { x: -0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 3, fadeOut: 6 } },
+          { orientation: 'portrait', size: 'medium', offset: { x: -0.3, y: -0.02 }, anchor: { x: 'center', y: 'center' }, duration: { fadeIn: 4, linger: 3, fadeOut: 6 }, blendMode: 'screen' },
+          { orientation: 'portrait', size: 'medium', offset: { x: 0.3, y: 0.02 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 }, blendMode: 'screen' },
+          { orientation: 'portrait', size: 'medium', offset: { x: 0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.6, duration: { fadeIn: 4, linger: 4, fadeOut: 6 }, blendMode: 'screen' },
         ]
       },
       {
         // Two large squares interpolate side by side in the center
         fragments: [
           { orientation: 'square', size: 'xlarge', offset: { x: -0.2, y: 0 }, anchor: { x: 'center', y: 'center' } },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0.2, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 }
+          { orientation: 'square', size: 'xlarge', offset: { x: 0.2, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.7 }
         ]
       },
       {
-        // Two large squares interpolate side by side in the center, slightly offset at the y axis
+        // Square of squares, same source
         fragments: [
-          { orientation: 'square', size: 'xlarge', offset: { x: -0.2, y: -0.1 }, anchor: { x: 'center', y: 'center' } },
-          { orientation: 'square', size: 'xlarge', offset: { x: 0.2, y: 0.1 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 }
-        ]
+          { orientation: 'square', size: 'large', offset: { x: 0, y: -0.4 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: -0.6, y: -0.4 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: 0.6, y: -0.4 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: -0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: 0.6, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: 0, y: 0.4 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: -0.6, y: 0.4 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+          { orientation: 'square', size: 'large', offset: { x: 0.6, y: 0.4 }, anchor: { x: 'center', y: 'center' }, opacity: 0.4, blendMode: 'screen' },
+        ], sameSource: true
       },
       {
-        // Semi transparent square lays on large portrait
-        fragments: [
-          { orientation: 'portrait', size: 'xlarge', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
-          { orientation: 'square', size: 'large', offset: { x: 0, y: 0 }, opacity: 0.7, anchor: { x: 'center', y: 'center' } },
-        ]
-      },
-      {
-        // Square and portrait interpolate inthe middle while smaller square appears on the top right
+        // Square and portrait interpolate inthe middle while smaller squares appears on the right
         fragments: [
           { orientation: 'portrait', size: 'large', offset: { x: 0, y: 0 }, anchor: { x: 'center', y: 'center' } },
-          { orientation: 'square', size: 'large', offset: { x: -0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9 },
-          { orientation: 'square', size: 'medium', offset: { x: -0.3, y: 0.3 }, anchor: { x: 'right', y: 'top' }, duration: { delay: 2, linger: 2 } },
+          { orientation: 'square', size: 'large', offset: { x: -0.8, y: 0 }, anchor: { x: 'center', y: 'center' }, opacity: 0.9, blendMode: 'screen' },
+          { orientation: 'square', size: 'medium', offset: { x: -0.3, y: 0.05 }, anchor: { x: 'right', y: 'top' }, duration: { delay: 1, fadeIn: 2, linger: 2 }, blendMode: 'screen' },
+          { orientation: 'square', size: 'medium', offset: { x: -0.3, y: 0 }, anchor: { x: 'right', y: 'center' }, duration: { delay: 1.5, fadeIn: 2, linger: 2 }, blendMode: 'screen' },
+          { orientation: 'square', size: 'medium', offset: { x: -0.3, y: -0.05 }, anchor: { x: 'right', y: 'bottom' }, duration: { delay: 2, fadeIn: 2, linger: 2 }, blendMode: 'screen' },
         ]
       },
     ];
@@ -171,7 +193,7 @@
       imageMode(CENTER);
       loadBlendModes()
       startNextComposition();
-        
+
       // Play the soundtrack on loop
       // soundtrack.loop();
     }
@@ -241,11 +263,11 @@
         if (frag.blendMode) {
           blendMode(blendModes[frag.blendMode]);
         }
-        
+
         tint(255, finalAlpha);
         push();
-        
-        const animateY =  map(t, 0, compositionDuration, 0, frag.drawH/20)
+
+        const animateY = map(t, 0, compositionDuration, 0, frag.drawH / 20)
         let imgW = frag.drawW + animateY;
         let imgH = frag.drawH + animateY;
         let x = frag.pos.x - imgW / 2;
@@ -305,7 +327,7 @@
 
       for (const fragment of composition.fragments) {
         let dimensions = getTargetDimensions(fragment);
-        img = composition.sameSource ? img || random(imgs): random(imgs);
+        img = composition.sameSource ? img || random(imgs) : random(imgs);
         let availableW = img.width;
         let availableH = img.height;
 
