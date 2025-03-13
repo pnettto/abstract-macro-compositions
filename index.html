@@ -13,22 +13,21 @@
       margin: 0;
       overflow: hidden;
       background-color: black;
+      color: #ccc;
     }
   </style>
 </head>
 
 <body>
   <script>
+    const imagesFolder = 'images/macros'
     const numImages = 11;
     const defaultDurations = { delay: 0, fadeIn: 4, linger: 4, fadeOut: 4 };
-    const defaultDuration = 12;
 
     let imgs = [];
-    let currentCompositionDef;
     let currentFragments = [];
     let compositionStartTime = 0;
-    let blenModes = {};
-    let compositionDuration = defaultDuration;
+    let compositionDuration = 0;
     let lastCompositionIndex = -1;
 
     const compositions = [
@@ -159,8 +158,9 @@
     function preload() {
       // Load images "1.jpg" to "[numImages].jpg"
       for (let i = 1; i <= numImages; i++) {
-        imgs.push(loadImage(i + '.jpg'));
+        imgs.push(loadImage(imagesFolder + '/' + i + '.jpg'));
       }
+
       // Load the soundtrack
       // soundtrack = loadSound('/abstract-macro-compositions/soundtrack.mp3');
     }
@@ -201,13 +201,12 @@
 
     function windowResized() {
       resizeCanvas(windowWidth, windowHeight);
-      // Regenerate the current composition so fragments scale/position correctly.
-      currentFragments = generateFragments(currentCompositionDef);
+      currentFragments = generateFragments(currentComposition);
     }
 
     function draw() {
       background(0);
-      let t = (millis() - compositionStartTime) / 1000;
+      const t = (millis() - compositionStartTime) / 1000;
 
       if (t >= compositionDuration) {
         startNextComposition();
@@ -228,9 +227,11 @@
           continue;
         }
 
-        if (t >= delayDuration && t < delayDuration + fadeInDuration) {
+        if (t < delayDuration + fadeInDuration) {
+          // Fade in
           alpha = map(t, delayDuration, delayDuration + fadeInDuration, 0, 255);
         } else if (t >= fadeOutStart) {
+          // Fade out
           alpha = map(t, fadeOutStart, fadeOutStart + fadeOutDuration, 255, 0);
         }
 
@@ -242,20 +243,42 @@
         }
         
         tint(255, finalAlpha);
-        image(frag.img, frag.pos.x, frag.pos.y, frag.drawW, frag.drawH,
-          frag.cropX, frag.cropY, frag.drawW, frag.drawH);
-        noTint();
+        push();
+        
+        const animateY =  map(t, 0, compositionDuration, 0, frag.drawH/20)
+        let imgW = frag.drawW + animateY;
+        let imgH = frag.drawH + animateY;
+        let x = frag.pos.x - imgW / 2;
+        let y = frag.pos.y - imgH / 2;
+        const borderRadius = 3
 
+        drawingContext.beginPath();
+        drawingContext.moveTo(x + borderRadius, y);
+        drawingContext.lineTo(x + imgW - borderRadius, y);
+        drawingContext.quadraticCurveTo(x + imgW, y, x + imgW, y + borderRadius);
+        drawingContext.lineTo(x + imgW, y + imgH - borderRadius);
+        drawingContext.quadraticCurveTo(x + imgW, y + imgH, x + imgW - borderRadius, y + imgH);
+        drawingContext.lineTo(x + borderRadius, y + imgH);
+        drawingContext.quadraticCurveTo(x, y + imgH, x, y + imgH - borderRadius);
+        drawingContext.lineTo(x, y + borderRadius);
+        drawingContext.quadraticCurveTo(x, y, x + borderRadius, y);
+        drawingContext.closePath();
+        drawingContext.clip();
+
+        image(frag.img, frag.pos.x, frag.pos.y, imgW, imgH, frag.cropX, frag.cropY, frag.drawW, frag.drawH);
+
+        pop();
+
+        noTint();
         blendMode(BLEND);
       }
     }
 
-    // Start the next composition.
     function startNextComposition() {
       let newIndex;
-      // do {
+      do {
         newIndex = floor(random(compositions.length));
-      // } while (newIndex === lastCompositionIndex);
+      } while (newIndex === lastCompositionIndex);
 
       lastCompositionIndex = newIndex;
       currentComposition = compositions[newIndex];
@@ -275,36 +298,19 @@
       compositionStartTime = millis();
     }
 
-    // Apply random variation to fragment properties based on composition randomization settings
-    function applyVariations(fragDef) {
-      // Create a shallow copy of the fragment definition
-      const variationFrag = JSON.parse(JSON.stringify(fragDef));
-
-      // If no offset defined, return original fragment
-      if (Array.isArray(variationFrag.offset?.x)) {
-        variationFrag.offset.x = random(variationFrag.offset.x);
-      }
-      if (Array.isArray(variationFrag.offset?.y)) {
-        variationFrag.offset.y = random(variationFrag.offset.y);
-      }
-
-      return variationFrag;
-    }
-
-    // Generate fragment objects from the composition definition.
-    function generateFragments(compDef) {
+    // Generate fragment objects from the composition definition
+    function generateFragments(composition) {
       let frags = [];
       let img;
 
-      for (let fragDef of compDef.fragments) {
-        let fragment = applyVariations(fragDef);
-        let dims = getTargetDimensions(fragment);
-        img = compDef.sameSource ? img || random(imgs): random(imgs);
+      for (const fragment of composition.fragments) {
+        let dimensions = getTargetDimensions(fragment);
+        img = composition.sameSource ? img || random(imgs): random(imgs);
         let availableW = img.width;
         let availableH = img.height;
 
-        // Maintain the target aspect ratio.
-        let aspect = dims.w / dims.h;
+        // Maintain the target aspect ratio
+        let aspect = dimensions.w / dimensions.h;
         let maxCropW, maxCropH;
         if (availableW / availableH >= aspect) {
           maxCropH = availableH;
@@ -313,9 +319,9 @@
           maxCropW = availableW;
           maxCropH = availableW / aspect;
         }
-        let s = min(1, maxCropW / dims.w, maxCropH / dims.h);
-        let drawW = dims.w * s;
-        let drawH = dims.h * s;
+        let scale = min([1, maxCropW / dimensions.w, maxCropH / dimensions.h]);
+        let drawW = dimensions.w * scale;
+        let drawH = dimensions.h * scale;
 
         let cropX = random(0, availableW - drawW);
         let cropY = random(0, availableH - drawH);
@@ -333,92 +339,67 @@
           opacity: fragment.opacity || 1,
           duration: { ...defaultDurations, ...fragment.duration }
         };
+
         frags.push(frag);
       }
+
       return frags;
     }
 
-    // Determines target drawn dimensions based on fragment orientation and size.
+    // Determine target drawn dimensions based on fragment orientation and size
     function getTargetDimensions(fragDef) {
       let w, h;
-      if (fragDef.orientation === 'square') {
-        if (fragDef.size === 'xlarge') {
-          let side = min(windowWidth, windowHeight) * 0.75;
-          w = side; h = side;
-        } else if (fragDef.size === 'large') {
-          let side = min(windowWidth, windowHeight) * 0.55;
-          w = side; h = side;
-        } else if (fragDef.size === 'medium') {
-          let side = min(windowWidth, windowHeight) * 0.25;
-          w = side; h = side;
-        } else {
-          let side = min(windowWidth, windowHeight) * 0.15;
-          w = side; h = side;
-        }
-      } else if (fragDef.orientation === 'portrait') {
-        if (fragDef.size === 'xlarge') {
-          w = windowWidth * 0.75;
-          h = w * 1.5;
-        } else if (fragDef.size === 'large') {
-          w = windowWidth * 0.3;
-          h = w * 1.5;
-        } else if (fragDef.size === 'medium') {
-          w = windowWidth * 0.2;
-          h = w * 1.5;
-        } else {
-          w = windowWidth * 0.15;
-          h = w * 1.5;
-        }
-      } else if (fragDef.orientation === 'landscape') {
-        if (fragDef.size === 'xlarge') {
-          h = windowHeight * 0.75;
-          w = h * 1.5;
-        } else if (fragDef.size === 'large') {
-          h = windowHeight * 0.3;
-          w = h * 1.5;
-        } else if (fragDef.size === 'medium') {
-          h = windowHeight * 0.2;
-          w = h * 1.5;
-        } else {
-          h = windowHeight * 0.15;
-          w = h * 1.5;
-        }
-      } else if (fragDef.orientation === 'full') {
-          h = windowHeight - 64;
-          w = windowWidth - 64;
-      } else {
-        let side = min(windowWidth, windowHeight) * 0.25;
-        w = side; h = side;
-      }
+      const sizeMultipliers = {
+        xlarge: 0.75,
+        large: 0.5,
+        medium: 0.3,
+        small: 0.15
+      };
+
+      const orientationHandlers = {
+        square: (size) => {
+          const side = min(windowWidth, windowHeight) * (sizeMultipliers[size] || 0.25);
+          return { w: side, h: side };
+        },
+        portrait: (size) => {
+          const w = windowWidth * (sizeMultipliers[size] || 0.15);
+          return { w, h: w * 1.5 };
+        },
+        landscape: (size) => {
+          const h = windowHeight * (sizeMultipliers[size] || 0.15);
+          return { w: h * 1.5, h };
+        },
+        full: () => ({
+          w: windowWidth - 64,
+          h: windowHeight - 64
+        })
+      };
+
+      const handler = orientationHandlers[fragDef.orientation || 'square'];
+      ({ w, h } = handler(fragDef.size || 'medium'));
       return { w, h };
     }
 
-    // Computes the fragment's position based on its anchor and offset.
+    // Compute the fragment's position based on its anchor and offset
     function getFragmentPosition(fragDef, fragW, fragH) {
-      let baseX, baseY;
-      if (fragDef.anchor.x === 'center') {
-        baseX = windowWidth / 2;
-      } else if (fragDef.anchor.x === 'left') {
-        baseX = fragW / 2;
-      } else if (fragDef.anchor.x === 'right') {
-        baseX = windowWidth - fragW / 2;
-      } else {
-        baseX = windowWidth / 2;
-      }
+      const anchorMappings = {
+        x: {
+          center: () => windowWidth / 2,
+          left: () => fragW / 2,
+          right: () => windowWidth - fragW / 2
+        },
+        y: {
+          center: () => windowHeight / 2,
+          top: () => fragH / 2,
+          bottom: () => windowHeight - fragH / 2
+        }
+      };
 
-      if (fragDef.anchor.y === 'center') {
-        baseY = windowHeight / 2;
-      } else if (fragDef.anchor.y === 'top') {
-        baseY = fragH / 2;
-      } else if (fragDef.anchor.y === 'bottom') {
-        baseY = windowHeight - fragH / 2;
-      } else {
-        baseY = windowHeight / 2;
-      }
+      const baseX = (anchorMappings.x[fragDef.anchor.x || 'center'])();
+      const baseY = (anchorMappings.y[fragDef.anchor.y || 'center'])();
 
-      // Calculate offset based on fragment's size
-      let offsetX = (fragDef.offset && fragDef.offset.x) ? fragDef.offset.x * fragW : 0;
-      let offsetY = (fragDef.offset && fragDef.offset.y) ? fragDef.offset.y * fragH : 0;
+      const offsetX = (fragDef.offset && fragDef.offset.x) ? fragDef.offset.x * fragW : 0;
+      const offsetY = (fragDef.offset && fragDef.offset.y) ? fragDef.offset.y * fragH : 0;
 
       let posX = baseX + offsetX;
       let posY = baseY + offsetY;
