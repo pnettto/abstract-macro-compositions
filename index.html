@@ -15,12 +15,36 @@
       background-color: black;
       color: #ccc;
     }
+
+    #dropdown-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+
+    #folder-selector {
+      background-color: #333;
+      color: #ccc;
+      border: 1px solid #555;
+      padding: 5px;
+      font-size: 14px;
+    }
   </style>
 </head>
 
 <body>
+  <div id="dropdown-container">
+    <select id="folder-selector">
+      <option value="gouache">Gouache</option>
+      <option value="plants">Plants</option>
+      <option value="roots">Roots</option>
+      <option value="stockholm">Stockholm</option>
+    </select>
+  </div>
   <script>
-    const imagesFolder = 'images/macros'
+    const imagesFolderBase = 'images/';
+    let imagesFolder = imagesFolderBase + 'gouache';
     const numImages = 11;
     const defaultDurations = { delay: 0, fadeIn: 4, linger: 4, fadeOut: 4 };
 
@@ -178,7 +202,7 @@
     ];
 
     function preload() {
-      // Load images "1.jpg" to "[numImages].jpg"
+      imgs = []; // Clear previously loaded images
       for (let i = 1; i <= numImages; i++) {
         imgs.push(loadImage(imagesFolder + '/' + i + '.jpg'));
       }
@@ -440,6 +464,15 @@
     //     soundtrack.loop();
     //   }
     // }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('folder-selector').addEventListener('change', (event) => {
+        console.log('Selected folder:', event.target.value);
+        imagesFolder = imagesFolderBase + event.target.value;
+        imgs = [];
+        preload();
+      });
+    });
   </script>
 </body>
 
